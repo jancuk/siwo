@@ -13,12 +13,13 @@ $(document).ready(function(){
       if (url != "" && message != ""){
         $.ajax({
           type: "POST",
-          url: "http://localhost:3000/posts",
+          url: "http://detikcom.herokuapp.com/posts",
           data: postData,
           dataType: "json",
           success: function(data){
             $("#alert_text").text("Success Created Message");
-            console.log(data.status);
+            $("#list").remove();
+            Authenticate.listApi();
           },
           error: function(data){
             console.log("failed");
@@ -64,10 +65,33 @@ $(document).ready(function(){
       $("#login_container_confirmed").hide();
       $("#button_clear").hide();
       $("#login_container").show();
+    },
+    listApi: function(){
+      $.ajax({
+        type: "GET",
+        url: "http://detikcom.herokuapp.com/posts",
+        dataType: "json",
+        success: function(data){
+          addElement(data.result);
+        },
+        error: function(data){
+          var result_api = [];
+        }
+      });
     }
   }
 
+  function addElement(result){
+    var html = '<div class="list-group">';
+    $.each(result, function (i, item) {
+        html += ('<a href="'+item.url+'" class="list-group-item" target="_blank">'+item.message+'</a>');
+    });
+    html += '</div>'
+    $('#list').append(html);
+  }
+
   Authenticate.loadCredentials();
+  Authenticate.listApi();
 
   $("#login").click(function(){
     Authenticate.postData();
