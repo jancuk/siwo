@@ -3,12 +3,79 @@
 <head>
 <title>SIWO</title>
 <link rel="stylesheet" type="text/css" href="css/login.css" />
+<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
 </head>
 <body>
-<div class="login">
-  <input type="text" placeholder="Username" id="username">
-  <input type="password" placeholder="Password" id="password">
-  <input type="submit" value="Sign In">
+
+<div id="login_container" class="pane-login">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="panel panel-primary">
+        <div class="panel-heading">Sign-in</div>
+        <div>
+          <div class="control-group">
+              <div class="controls">
+                <input type="email" id="username" class="form-control" placeholder="Email address" required autofocus>
+              </div>
+          </div>
+          <div class="control-group">
+              <div class="controls">
+                <input type="password" id="password" class="form-control" placeholder="Password" required>
+              </div>
+          </div>
+          <button class="btn btn-lg btn-primary btn-sm btn-block" id="submit" type="submit">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+<div id="login_container_confirmed" class="pane-login">
+   <div class="row">
+    <div class="col-md-6">
+      <div class="panel panel-primary">
+        <div id="logged_in_as" class="panel-heading"></div>
+        <div class="panel-body">
+          <!-- Nav tabs -->
+          <ul class="nav nav-tabs" role="tablist">
+            <li class="active">
+                <a href="#home" role="tab" data-toggle="tab">
+                    <icon class="fa fa-home"></icon> Share Info
+                </a>
+            </li>
+            <li><a href="#list" role="tab" data-toggle="tab">
+                <i class="fa fa-user"></i> List Data
+                </a>
+            </li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane fade active in" id="home">
+              <div class="control-group">
+                <div class="controls">
+                  <input type="text" id="url" class="form-control" placeholder="Url" required autofocus>
+                </div>
+              </div>
+              <div class="control-group">
+                <div class="controls">
+                  <input type="message" id="message" class="form-control" placeholder="Message" required>
+                </div>
+              </div>
+              <button class="btn btn-lg btn-primary btn-sm" id="messagePost" type="submit">Send</button>
+            </div>
+            <div class="tab-pane" id="list">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button id="button_clear">Log Out</button>
+
 </body>
 </html>
