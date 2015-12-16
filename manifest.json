@@ -16,6 +16,7 @@
     "storage",
     "tabs",
     "http://localhost/*",
+    "https://fonts.googleapis.com/*",
     "https://detikcom.herokuapp.com/*"
   ],
   "content_scripts": [{

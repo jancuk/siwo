@@ -37,7 +37,7 @@ var Authenticate = {
         dataType: "json",
         success: function(data){
           var html = '<div class="alert alert-success"><strong>Message Created</strong></div>';
-          $('#alert_text').append(html);
+          $('#alert_text').html(html);
           $("#list").remove();
           Authenticate.listApi();
         },
@@ -49,26 +49,43 @@ var Authenticate = {
     }
   },
   saveCredentials: function(){
-    $("#alert_text").text("");
     var username = $("#username").val();
     var password = $("#password").val();
+    var postData =  "username="+username+"&password="+password;
     if(username != "" && password != ""){
-      localStorage.setItem("username", username);
-      localStorage.setItem("password", password);
-      $("#login_container").hide();
-      $("#button_clear").show();
-      $("#login_container_confirmed").show();
-      $("#logged_in_as").text("Logged in as " + username);
+        $.ajax({
+          type: "POST",
+          url: "http://detikcom.herokuapp.com/users",
+          data: postData,
+          dataType: "json",
+          success: function(data){
+            if (data.status == 200) {
+              localStorage.setItem("username", data.result.username);
+              localStorage.setItem("uid", data.result.id);
+              $("#login_container").hide();
+              $("#button_clear").show();
+              $("#login_container_confirmed").show();
+              $("#logged_in_as").text("Logged in as " + data.result.username);
+            } else {
+              var html = '<div class="alert alert-danger"><strong>Invalid Username or Password</strong></div>';
+              $("#alert_text").html(html);
+            }
+          },
+          error: function(data){
+            console.log("failed");
+            console.log(data);
+          }
+        });
     } else {
       var html = '<div class="alert alert-danger"><strong>Invalid Username or Password</strong></div>';
-      $("#alert_text").append(html);
+      $("#alert_text").html(html);
     }
   },
   loadCredentials: function(){
     var username = localStorage.getItem("username");
-    var password = localStorage.getItem("password");
+    var password = localStorage.getItem("uid");
 
-    if(username != undefined && password != undefined) {
+    if(username != undefined) {
       $("#login_container").hide();
       $("#button_clear").show();
       $("#login_container_confirmed").show();
@@ -81,9 +98,9 @@ var Authenticate = {
   },
   deleteCredentials: function(){
     localStorage.removeItem("username");
-    localStorage.removeItem("password");
+    localStorage.removeItem("uid");
     var html = '<div class="alert alert-success"><strong>Sign-out Success</strong></div>';
-    $('#alert_text').append(html);
+    $('#alert_text').html(html);
     $("#login_container_confirmed").hide();
     $("#button_clear").hide();
     $("#login_container").show();
@@ -108,5 +125,5 @@ function addElement(result){
   $.each(result, function (i, item) {
       html += ('<a href="'+item.url+'" class="list-group-item" target="_blank"><p>'+item.message+'</p><p>By '+localStorage.getItem('username')+'</p></a>');
   });
-  $('#list').append(html);
+  $('#list').html(html);
 }
