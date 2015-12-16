@@ -1,112 +1,112 @@
-$(document).ready(function(){
-  var Authenticate = {
-    postData: function(){
-      var username = localStorage.getItem("username");
-      var password = localStorage.getItem("password");
-      // soon implement
-    },
-    postMessage: function() {
-      var url = $("#url").val();
-      var message = $("#message").val();
-      var user    = 1;
-      var postData =  "url="+url+"&message="+message;
-      if (url != "" && message != ""){
-        $.ajax({
-          type: "POST",
-          url: "http://detikcom.herokuapp.com/posts",
-          data: postData,
-          dataType: "json",
-          success: function(data){
-            $("#alert_text").text("Success Created Message");
-            $("#list").remove();
-            Authenticate.listApi();
-          },
-          error: function(data){
-            console.log("failed");
-            console.log(data);
-          }
-        });
-      }
-    },
-    saveCredentials: function(){
-      $("#alert_text").text("");
-      var username = $("#username").val();
-      var password = $("#password").val();
-      if(username != "" && password != ""){
-        localStorage.setItem("username", username);
-        localStorage.setItem("password", password);
-        $("#login_container").hide();
-        $("#button_clear").show();
-        $("#login_container_confirmed").show();
-        $("#logged_in_as").text("Logged in as " + username);
-      } else {
-        $("#alert_text").text("Invalid Username Or Password");
-      }
-    },
-    loadCredentials: function(){
-      var username = localStorage.getItem("username");
-      var password = localStorage.getItem("password");
+var posts;
+var port = chrome.extension.connect({name: "share connector"})
 
-      if(username != undefined && password != undefined) {
-        $("#login_container").hide();
-        $("#button_clear").show();
-        $("#login_container_confirmed").show();
-        $("#logged_in_as").text("You are logged in as " + username); 
-      }else{
-         $("#login_container").show();
-         $("#login_container_confirmed").hide();
-         $("#button_clear").hide();
-      }
-    },
-    deleteCredentials: function(){
-      localStorage.removeItem("username");
-      localStorage.removeItem("password");
-      $("#alert_text").text("Credentials Deleted");
-      $("#login_container_confirmed").hide();
-      $("#button_clear").hide();
-      $("#login_container").show();
-    },
-    listApi: function(){
+document.addEventListener('DOMContentLoaded', function () {
+   Authenticate.loadCredentials();
+   Authenticate.listApi();
+   $("#login").click(function(){
+     Authenticate.postData();
+   });
+   $("#submit").click(function(){
+     Authenticate.saveCredentials();
+   });
+   $("#button_clear").click(function(){
+     Authenticate.deleteCredentials();
+   });
+   $("#messagePost").click(function(){
+     Authenticate.postMessage();
+   });
+});
+
+var Authenticate = {
+  postData: function(){
+    var username = localStorage.getItem("username");
+    var password = localStorage.getItem("password");
+    // soon implement
+  },
+  postMessage: function() {
+    var url = $("#url").val();
+    var message = $("#message").val();
+    var user    = 1;
+    var postData =  "url="+url+"&message="+message;
+    if (url != "" && message != ""){
       $.ajax({
-        type: "GET",
+        type: "POST",
         url: "http://detikcom.herokuapp.com/posts",
+        data: postData,
         dataType: "json",
         success: function(data){
-          addElement(data.result);
+          var html = '<div class="alert alert-success"><strong>Message Created</strong></div>';
+          $('#alert_text').append(html);
+          $("#list").remove();
+          Authenticate.listApi();
         },
         error: function(data){
-          var result_api = [];
+          console.log("failed");
+          console.log(data);
         }
       });
     }
-  }
+  },
+  saveCredentials: function(){
+    $("#alert_text").text("");
+    var username = $("#username").val();
+    var password = $("#password").val();
+    if(username != "" && password != ""){
+      localStorage.setItem("username", username);
+      localStorage.setItem("password", password);
+      $("#login_container").hide();
+      $("#button_clear").show();
+      $("#login_container_confirmed").show();
+      $("#logged_in_as").text("Logged in as " + username);
+    } else {
+      var html = '<div class="alert alert-danger"><strong>Invalid Username or Password</strong></div>';
+      $("#alert_text").append(html);
+    }
+  },
+  loadCredentials: function(){
+    var username = localStorage.getItem("username");
+    var password = localStorage.getItem("password");
 
-  function addElement(result){
-    var html = '<div class="list-group">';
-    $.each(result, function (i, item) {
-        html += ('<a href="'+item.url+'" class="list-group-item" target="_blank">'+item.message+'</a>');
+    if(username != undefined && password != undefined) {
+      $("#login_container").hide();
+      $("#button_clear").show();
+      $("#login_container_confirmed").show();
+      $("#logged_in_as").text("You are logged in as " + username); 
+    }else{
+       $("#login_container").show();
+       $("#login_container_confirmed").hide();
+       $("#button_clear").hide();
+    }
+  },
+  deleteCredentials: function(){
+    localStorage.removeItem("username");
+    localStorage.removeItem("password");
+    var html = '<div class="alert alert-success"><strong>Sign-out Success</strong></div>';
+    $('#alert_text').append(html);
+    $("#login_container_confirmed").hide();
+    $("#button_clear").hide();
+    $("#login_container").show();
+  },
+  listApi: function(){
+    $.ajax({
+      type: "GET",
+      url: "http://detikcom.herokuapp.com/posts",
+      dataType: "json",
+      success: function(data){
+        addElement(data.result);
+      },
+      error: function(data){
+        var result_api = [];
+      }
     });
-    html += '</div>'
-    $('#list').append(html);
   }
+}
 
-  Authenticate.loadCredentials();
-  Authenticate.listApi();
-
-  $("#login").click(function(){
-    Authenticate.postData();
+function addElement(result){
+  var html = '';
+  $.each(result, function (i, item) {
+      html += ('<a href="'+item.url+'" class="list-group-item" target="_blank"><p>'+item.message+'</p><p>By '+localStorage.getItem('username')+'</p></a>');
   });
-
-  $("#submit").click(function(){
-    Authenticate.saveCredentials();
-  });
-
-  $("#button_clear").click(function(){
-    Authenticate.deleteCredentials();
-  });
-
-  $("#messagePost").click(function(){
-    Authenticate.postMessage();
-  });
-
-});
+  $('#list').append(html);
+}

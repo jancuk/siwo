@@ -4,79 +4,66 @@
 <title>SIWO</title>
 <link rel="stylesheet" type="text/css" href="css/login.css" />
 <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
-<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+<link href="//fonts.googleapis.com/css?family=Open+Sans:400,300,600,700" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/main.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 </head>
 <body>
 
-<div id="login_container" class="pane-login">
-  <div class="row">
-    <div class="col-md-8">
-      <div class="panel panel-primary">
-        <div class="panel-heading">Sign-in</div>
-        <div>
-          <div class="control-group">
-              <div class="controls">
-                <input type="email" id="username" class="form-control" placeholder="Email address" required autofocus>
-              </div>
+<div id="login_container">
+  <div class="container">
+    <div id="alert_text"></div>
+    <form class="form-signin">
+      <h1>Share Info<a href="https://azharamir.com" target="_blank">Powered by Jancuk</a></h1>
+      <div class="form-group">
+          <div class="controls">
+            <input type="email" id="username" class="form-control" placeholder="Email address" required autofocus>
           </div>
-          <div class="control-group">
-              <div class="controls">
-                <input type="password" id="password" class="form-control" placeholder="Password" required>
-              </div>
-          </div>
-          <button class="btn btn-lg btn-primary btn-sm btn-block" id="submit" type="submit">Submit</button>
-        </div>
       </div>
-    </div>
+      <div class="form-group">
+          <div class="controls">
+            <input type="password" id="password" class="form-control" placeholder="Password" required>
+          </div>
+      </div>
+      <button class="btn btn-lg btn-primary btn-block" id="submit" type="submit">Submit</button>
+    </form>
   </div>
 </div>
 
-<div id="login_container_confirmed" class="pane-login">
-   <div class="row">
-    <div class="col-md-6">
-      <div class="panel panel-primary">
-        <div id="logged_in_as" class="panel-heading"></div>
-        <p id="alert_text"></p>
-        <div class="panel-body">
-          <!-- Nav tabs -->
-          <ul class="nav nav-tabs" role="tablist">
-            <li class="active"><a href="#list" role="tab" data-toggle="tab">
-                <i class="fa fa-user"></i> List Data
-                </a>
-            </li>
-            <li>
-                <a href="#home" role="tab" data-toggle="tab">
-                    <i class="fa fa-home"></i>Input Info
-                </a>
-            </li>
-          </ul>
-          <div class="tab-content">
-            <div class="tab-pane" id="home">
-              <div class="control-group">
-                <div class="controls">
-                  <input type="text" id="url" class="form-control" placeholder="Fomat Url (Cant be Empty)" required>
-                </div>
-              </div>
-              <div class="control-group">
-                <div class="controls">
-                  <input type="message" id="message" class="form-control" placeholder="Message (Cant be Empty)" required>
-                </div>
-              </div>
-              <button class="btn btn-lg btn-primary btn-sm" id="messagePost" type="submit">Send</button>
-            </div>
-            <div class="tab-pane fade active in" id="list">
-            </div>
+<div id="login_container_confirmed">
+  <div class="container">
+    <div id="alert_text"></div>
+    <button id="button_clear" class="btn btn-primary pull-right">Log Out</button>
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="active">
+        <a href="#list" role="tab" data-toggle="tab">
+          <i class="fa fa-user"></i> List Data
+        </a>
+      </li>
+      <li>
+        <a href="#home" role="tab" data-toggle="tab">
+          <i class="fa fa-home"></i>Input Info
+        </a>
+      </li>
+    </ul>
+    <div class="tab-content">
+      <div class="tab-pane" id="home">
+        <div class="form-group">
+          <div class="controls">
+            <input type="text" id="url" class="form-control" placeholder="Fomat Url" required>
           </div>
         </div>
+        <div class="form-group">
+          <div class="controls">
+            <input type="message" id="message" class="form-control" placeholder="Message" required>
+          </div>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" id="messagePost" type="submit">Send</button>
       </div>
+      <div class="tab-pane fade active in" id="list"></div>
     </div>
   </div>
-</div>
-
-<button id="button_clear">Log Out</button>
 
 </body>
 </html>
